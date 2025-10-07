@@ -1,12 +1,19 @@
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/app/_lib/auth";
+
 export const metadata = {
   title: "Guest area",
 };
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession(authConfig);
+  console.log(session);
+  const firstName = session?.user?.name?.split(" ")[0];
+
   return (
     <div>
       <h2 className="font-semibold text-2xl text-accent-400 mb-7">
-        Welcome, Staszek
+        Welcome, {firstName}!
       </h2>
     </div>
   );

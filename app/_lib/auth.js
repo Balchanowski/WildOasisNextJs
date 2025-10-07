@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { createGuest, getGuest } from "./data-service";
 
-const authConfig = {
+export const authConfig = {
   providers: [
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -12,19 +13,31 @@ const authConfig = {
     authorized({ auth, request }) {
       return !!auth?.user;
     },
+    async signIn({ user, account, profile }) {
+      try {
+        const existingGuest = await getGuest(user.email);
+        if (!existingGuest) {
+          await createGuest({ email: user.email, fullName: user.name });
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    async session({ session, user }) {
+      const guest = await getGuest(session.user.email);
+      console.log(session);
+      session.user.guestId = guest.id;
+      return session;
+    },
   },
   pages: {
     signIn: "/login",
+    signOut: "/account",
   },
 };
 // Create the NextAuth handler and export it in a form the Next.js app router expects.
 // NextAuth(...) returns a handler function — not an object with `handlers` to destructure.
 const handler = NextAuth(authConfig);
-
 // Export for app router route handlers
 export { handler as GET, handler as POST };
-
-// Also export `auth` in case other modules expect a named `auth` export.
-export const auth = handler;
-export const signIn = handler;
-export const signOut = handler;
