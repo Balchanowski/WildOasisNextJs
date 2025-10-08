@@ -3,7 +3,8 @@
 import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
 import { createBooking } from "../_lib/actions";
-import SubmitButton from "./SubmitButton.js";
+//submitbutton
+import SubmitButton from "./Button";
 
 function ReservationForm({ cabin, user }) {
   const { range, resetRange } = useReservation();
