@@ -12,7 +12,7 @@ export const revalidate = 3600;
 // export const revalidate = 15;
 
 export default async function Page({ searchParams }) {
-  console.log(searchParams);
+  // console.log(searchParams);
 
   const filter = searchParams?.capacity ?? "all";
 

@@ -1,4 +1,4 @@
-import SubmitButton from "@/app/_components/submitButton";
+import SubmitButton from "@/app/_components/SubmitButton";
 import { updateBookingAction } from "@/app/_lib/actions";
 import { getBooking, getCabin } from "@/app/_lib/data-service";
 // import { useFormStatus } from "react-dom";
